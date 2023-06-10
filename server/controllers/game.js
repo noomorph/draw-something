@@ -34,6 +34,7 @@ module.exports = class Game {
       this.gameEnd();
     });
 
+    console.log(new Date(), 'New game: ', this.game.answer);
     this.io.emit('game:start', this.game.drawer);
     this.io.emit('game:hint', this.game.hint);
     this.io.to(drawerId).emit('game:answer', this.game.answer);
@@ -60,6 +61,7 @@ module.exports = class Game {
   }
 
   onSetUsername(name) {
+    console.log(new Date(), 'New user: ', name);
     this.user.name = name;
     this.socket.emit('game:user', this.user);
     this.io.emit('game:userList', this.users.getUserList());

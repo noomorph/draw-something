@@ -34,7 +34,6 @@ class Users {
 
   enoughReady() {
     const countReady = this.getReadyUserList().length;
-    console.log('Gotovi', countReady);
     return countReady >= 2;
   };
 
