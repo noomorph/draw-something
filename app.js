@@ -56,10 +56,15 @@ io.on('connection', function (socket) {
       game.user.score += 1;
       game.gameEnd(game.user);
     } else {
+      if (game.game.uncover(msg)) {
+        socket.emit('game:hint', game.game.hint);
+        socket.broadcast.emit('game:hint', game.game.hint);
+      }
+
       socket.broadcast.emit('chat:newMessage', { user: game.user, message: msg });
     }
   });
-  
+
   // Disconnect
   socket.on('disconnect', () => game.userQuit());
 });

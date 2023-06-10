@@ -1,11 +1,10 @@
-const R = require('ramda');
+const _ = require('lodash');
 const User = require('./user');
 
 class Users {
 
   constructor() {
     this.users = {};
-    this.drawerIndex = 0;
   }
 
   addUser(socketId) {
@@ -22,21 +21,21 @@ class Users {
   };
 
   nextDrawer() {
-    let list = this.getUserList();
-    let drawer = list[this.drawerIndex];
-    this.drawerIndex += 1;
-    if (this.drawerIndex === list.length) this.drawerIndex = 0;
-    return drawer;
+    return _.sample(this.getReadyUserList());
   };
 
   getUserList() {
-    return R.values(this.users);
+    return _.values(this.users);
   };
 
-  allReady() {
-    let userArray = this.getUserList();
-    let isReady = R.propEq('isReady', true);
-    return R.all(isReady)(userArray);
+  getReadyUserList() {
+    return _.filter(this.getUserList(), 'isReady');
+  };
+
+  enoughReady() {
+    const countReady = this.getReadyUserList().length;
+    console.log('Gotovi', countReady);
+    return countReady >= 2;
   };
 
   unReadyAll() {

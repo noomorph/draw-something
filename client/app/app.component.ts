@@ -9,28 +9,29 @@ import { Player } from "./player.model";
       <lobby [winner]="winner"> </lobby>
      </div>
      <div *ngIf="isPlaying">
-      <game [drawer]="drawer" [word]="word" [timeLeft]="timeLeft"> </game>
+       <game [drawer]="drawer" [word]="word" [hint]="hint" [timeLeft]="timeLeft"> </game>
      </div>
    </div>
   `
 })
 export class AppComponent implements OnInit {
   word: string;
+  hint: string;
   drawer: Player;
   isPlaying: boolean;
   winner: Object;
   timeLeft: number;
 
-  constructor(private gameService: GameService) {
-    // for fun
-    // window.useList = (list) => gameService.changeList(list);
-  }
+  constructor(private gameService: GameService) {}
 
   public ngOnInit() {
-
     this.gameService.onGameStart().subscribe((drawer) => {
       this.drawer = drawer;
       this.isPlaying = true;
+    });
+
+    this.gameService.onReceiveHint().subscribe((hint) => {
+      this.hint = hint;
     });
 
     this.gameService.onReceiveAnswer().subscribe((word) => {
@@ -44,6 +45,5 @@ export class AppComponent implements OnInit {
     });
 
     this.gameService.timeLeft().subscribe((time: number) => this.timeLeft = time);
-
   }
 }

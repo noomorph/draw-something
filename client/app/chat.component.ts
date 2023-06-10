@@ -19,8 +19,8 @@ import { Player } from "./player.model";
     
     <div *ngIf="!isDrawer" class="ui right aligned container">
       <form action="" class="ui small action input" #chatForm="ngForm" (ngSubmit)="sendMessage(chatForm.value.msg)">
-        <input type="text" [(ngModel)]="msg" ngControl="msg" name="msg" required>
-        <button type="submit" [disabled]="!chatForm.valid" class="ui teal button">send</button>
+        <input type="text" [(ngModel)]="msg" ngControl="msg" name="msg" required [minlength]="length" [maxlength]="length">
+        <button type="submit" [disabled]="!chatForm.valid" class="ui teal button">posli</button>
       </form>
     </div>
     
@@ -29,6 +29,7 @@ import { Player } from "./player.model";
 })
 export class ChatComponent implements OnInit {
   @Input() isDrawer: boolean;
+  @Input() length: string;
   messages: Array<any> = [];
   msg: string;
   player: Player;

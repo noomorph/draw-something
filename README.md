@@ -1,5 +1,7 @@
-# Draw Something
+# Razgadaj rysovanku
+
 ## [PLAY](https://draw-76z7.onrender.com/)
+
 *Initial load may take some time*
 
 *Note: need at least two players to start, open a new tab to play with yourself.*

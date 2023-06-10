@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { GameComponent } from './game.component';
 import { PaperComponent } from './paper.component';
 import { ChatComponent } from './chat.component';
+import { GameService } from "./game.service";
 import { PaperService } from "./paper.service";
 
 @NgModule({

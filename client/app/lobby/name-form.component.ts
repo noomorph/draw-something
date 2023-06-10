@@ -7,8 +7,8 @@ import { NgForm } from '@angular/forms';
     <form action="" class=""
       #nameForm="ngForm" (ngSubmit)="setUsername(nameForm)">
       <div class="ui action input">
-        <input type="text" placeholder="username" name="username" #username="ngModel" required ngModel>
-        <button class="ui button" type="submit" [disabled]="!nameForm.valid">set</button>
+        <input type="text" placeholder="ime igrača" name="username" #username="ngModel" required ngModel>
+        <button class="ui button" type="submit" [disabled]="!nameForm.valid">ustavi</button>
       </div>
     </form>
   `

@@ -6,9 +6,9 @@ import { PaperService } from './paper.service';
   selector: 'paper',
   template: `
     <div *ngIf="isDrawer">
-      <button class="ui button" (click)="clearPaper()">clear</button>
-      <button class="ui button" (click)="useEraser()">eraser</button>
-      <button class="ui button" (click)="pencil()">pencil</button>
+      <button class="ui button" (click)="clearPaper()">očisti</button>
+      <button class="ui button" (click)="useEraser()">iztri</button>
+      <button class="ui button" (click)="pencil()">rysuj</button>
     </div>
     <canvas 
       id="paper"

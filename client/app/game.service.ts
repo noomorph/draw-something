@@ -12,7 +12,7 @@ export class GameService {
     // server emits player obj after player sets username
     this.socket.on('game:user', (player: Player) => this.player = player);
   }
-  
+
   changeList(list: string) {
     this.socket.emit('game:useList', list);
   }
@@ -28,6 +28,10 @@ export class GameService {
 
   onGameStart() {
     return this.socketService.toObservable('game:start');
+  }
+
+  onReceiveHint() {
+    return this.socketService.toObservable('game:hint');
   }
 
   onReceiveAnswer() {

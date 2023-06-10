@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'winner',
   template: `
     <div *ngIf="winner" class="ui center aligned segment">
-      <p *ngIf="winner.user">Winner is {{winner.user.name}}</p>
+      <p *ngIf="winner.user">Šampion raunda: <b>{{winner.user.name}}</b></p>
       <p>{{winner.message}}</p>
     </div>
   `

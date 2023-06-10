@@ -4,7 +4,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
   selector: 'ready-button',
   template: `
     <button class="ui teal button"
-       (click)="onReady()" [disabled]="isReady">I'm Ready</button>
+       (click)="onReady()" [disabled]="isReady">Gotov(a) jesm</button>
   `
 })
 export class ReadyButtonComponent {

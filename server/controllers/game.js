@@ -7,24 +7,18 @@ module.exports = class Game {
     this.io = io;
     this.socket = socket;
   }
-  
+
   useList(list) {
     this.game.useList = list;
   }
 
   canStart() {
-    return (this.users.allReady()
-    && !this.game.isPlaying
-    && this.users.getUserList().length > 1);
+    return this.users.enoughReady() && !this.game.isPlaying;
   }
 
   checkReadyStatus() {
-    if (this.users.allReady() && !this.isPlaying() && this.users.getUserList().length <= 1) {
-      this.socket.emit('game:status', 'Game will start when there are 2 or more players');
-    }
-
-    if (!this.users.allReady() && !this.isPlaying()) {
-      this.io.emit('game:status', 'Waiting for everyone to get ready');
+    if (this.users.enoughReady() && !this.isPlaying()) {
+      this.socket.emit('game:status', 'Igra počinaje se ako je 2 i vyše gotovi igrači');
     }
   }
 
@@ -41,6 +35,7 @@ module.exports = class Game {
     });
 
     this.io.emit('game:start', this.game.drawer);
+    this.io.emit('game:hint', this.game.hint);
     this.io.to(drawerId).emit('game:answer', this.game.answer);
   }
 
@@ -48,7 +43,7 @@ module.exports = class Game {
     this.users.unReadyAll();
     this.game.end();
     clearInterval(this.game.interval);
-    this.io.emit('game:end', { user: winner, message: `Answer is ${this.game.answer}` });
+    this.io.emit('game:end', { user: winner, message: `Odgovor je: ${this.game.answer}` });
   }
 
   getDrawerId() {
@@ -86,7 +81,7 @@ module.exports = class Game {
       this.gameEnd();
     }
     if (this.game.drawer === user) {
-      this.io.emit('game:end', { message: 'Drawer has left the game' });
+      this.io.emit('game:end', { message: 'Rysovatelj ostavil igru' });
       this.gameEnd();
     }
     this.users.removeUser(this.socket.id);
@@ -97,7 +92,7 @@ module.exports = class Game {
   _countDown() {
     let time = this.game._TIME / 1000;
     this.io.emit('game:timeLeft', time);
-    
+
     this.game.interval = setInterval(() => {
       time = time - 1;
       this.io.emit('game:timeLeft', time);
