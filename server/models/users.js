@@ -21,7 +21,9 @@ class Users {
   };
 
   nextDrawer() {
-    return _.sample(this.getReadyUserList());
+    const users = this.getReadyUserList();
+    const leastDrew = _.minBy(users, 'drew').drew;
+    return _.sample(_.filter(users, { drew: leastDrew }));
   };
 
   getUserList() {

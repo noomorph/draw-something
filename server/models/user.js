@@ -5,6 +5,7 @@ class User {
     this.id = id;
     this.name = '';
     this.score = 0;
+    this.drew = 0;
     this.isReady = false;
     this.imageId = this._newImage();
   }

@@ -7,17 +7,18 @@ class Game {
     this.answer = '';
     this.hint = '';
     this.drawer = {};
+    this.status = 'waiting';
     this._wordList = _.shuffle(require('./words'));
-    this._TIME = 60000;
+    this._TIME = 60;
   }
 
   end() {
-    this.isPlaying = false;
+    this.status = 'waiting';
     clearTimeout(this.timeout);
   }
 
-  match(guess) {
-    return this.answer.toLowerCase() === guess.toLowerCase();
+  isFinished() {
+    return this.hint === this.answer;
   }
 
   uncover(guess) {
@@ -44,14 +45,14 @@ class Game {
 
   start(endCb) {
     this.newWord();
-    this.isPlaying = true;
+    this.status = 'playing';
     this._gameTimeout(endCb);
   }
 
   _gameTimeout(endCb) {
     this.timeout = setTimeout(() => {
       endCb();
-    }, this._TIME);
+    }, this._TIME * 1000);
   }
 }
 

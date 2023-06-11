@@ -1,25 +1,47 @@
 const { UsersInstance, GameInstance } = require('../models');
 
-module.exports = class Game {
+class Game {
   constructor(io, socket) {
     this.users = UsersInstance();
     this.game = GameInstance();
     this.io = io;
     this.socket = socket;
+    this.awaiting = false;
   }
 
   useList(list) {
     this.game.useList = list;
   }
 
-  canStart() {
-    return this.users.enoughReady() && !this.game.isPlaying;
+  waitForOthers(callback) {
+    if (this.game.status !== 'waiting') return;
+    this.game.status = 'preparing';
+
+    let time = 10;
+
+    this.io.emit('game:status', `Igra počinaje se za ${time}`);
+
+    const handle = setInterval(() => {
+      if (time > 0) {
+        time--;
+        this.io.emit('game:status', `Igra počinaje se za ${time}`);
+      } else {
+        clearInterval(handle);
+        if (this.users.enoughReady()) {
+          callback();
+        } else {
+          this.game.status = 'waiting';
+        }
+      }
+    }, 1000);
   }
 
-  checkReadyStatus() {
-    if (this.users.enoughReady() && !this.isPlaying()) {
-      this.socket.emit('game:status', 'Igra počinaje se ako je 2 i vyše gotovi igrači');
-    }
+  isPlaying() {
+    return this.game.status === 'playing';
+  }
+
+  canStart() {
+    return this.users.enoughReady() && this.game.status === 'waiting';
   }
 
   emitDrawer() {
@@ -29,7 +51,7 @@ module.exports = class Game {
   gameStart() {
     this.game.drawer = this.users.nextDrawer();
     let drawerId = this.game.drawer.id;
-    this._countDown();
+    this._countDown(this.game._TIME);
     this.game.start(() => {
       this.gameEnd();
     });
@@ -51,10 +73,6 @@ module.exports = class Game {
     return this.game.drawer.id;
   }
 
-  isPlaying() {
-    return this.game.isPlaying;
-  }
-
   newUser() {
     this.users.addUser(this.socket.id);
     this.user = this.users.find(this.socket.id);
@@ -73,7 +91,9 @@ module.exports = class Game {
 
   ready() {
     this.user.isReady = true;
-    this.checkReadyStatus();
+    if (!this.users.enoughReady() && this.game.status === 'waiting') {
+      this.socket.emit('game:status', 'Igra počinaje se ako je 2 i vyše gotovi igrači');
+    }
     this.io.emit('game:userList', this.users.getUserList());
   }
 
@@ -90,14 +110,15 @@ module.exports = class Game {
     this.io.emit('game:userList', this.users.getUserList());
   }
 
-
-  _countDown() {
-    let time = this.game._TIME / 1000;
+  _countDown(time) {
     this.io.emit('game:timeLeft', time);
 
+    let left = time;
     this.game.interval = setInterval(() => {
-      time = time - 1;
-      this.io.emit('game:timeLeft', time);
+      left -= 1;
+      this.io.emit('game:timeLeft', left);
     }, 1000);
   }
 }
+
+module.exports = Game;

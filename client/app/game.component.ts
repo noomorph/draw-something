@@ -17,7 +17,7 @@ import { Player } from "./player.model";
         <paper> </paper>
     </div>
     <div class="ui text container segment">
-      <chat [isDrawer]="isDrawer" [length]="hintLength"> </chat>
+      <chat> </chat>
     </div>
   `
 })

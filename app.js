@@ -37,30 +37,30 @@ io.on('connection', function (socket) {
 
   socket.on('game:ready', () => {
     game.ready();
+
     if (game.isPlaying()) {
       game.emitDrawer();
       drawing.load();
-    }
-
-    game.checkReadyStatus();
-
-    if (game.canStart()) {
-      game.gameStart();
-      drawing.notifyDrawer(game.getDrawerId());
+    } else if (game.canStart()) {
+      game.waitForOthers(() => {
+        game.gameStart();
+        drawing.onClear();
+        drawing.notifyDrawer(game.getDrawerId());
+      });
     }
   });
 
   // Chat
   socket.on('chat:newMessage', (msg) => {
-    if (game.game.match(msg)) {
-      game.user.score += 1;
-      game.gameEnd(game.user);
-    } else {
-      if (game.game.uncover(msg)) {
-        socket.emit('game:hint', game.game.hint);
-        socket.broadcast.emit('game:hint', game.game.hint);
-      }
+    if (socket.id !== game.getDrawerId() && game.game.uncover(msg)) {
+      socket.emit('game:hint', game.game.hint);
+      socket.broadcast.emit('game:hint', game.game.hint);
 
+      if (game.game.isFinished()) {
+        game.user.score += 1;
+        game.gameEnd(game.user);
+      }
+    } else {
       socket.broadcast.emit('chat:newMessage', { user: game.user, message: msg });
     }
   });
