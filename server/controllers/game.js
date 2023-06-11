@@ -50,7 +50,7 @@ class Game {
 
   gameStart() {
     this.game.drawer = this.users.nextDrawer();
-    this.game.drawer.drew++;
+    this.game.drawer.drew = Date.now();
 
     let drawerId = this.game.drawer.id;
     this._countDown(this.game._TIME);
