@@ -1,0 +1,13 @@
+diff --git a/node_modules/paper/dist/paper-full.js b/node_modules/paper/dist/paper-full.js
+index a75c99f..f6ca266 100644
+--- a/node_modules/paper/dist/paper-full.js
++++ b/node_modules/paper/dist/paper-full.js
+@@ -13994,7 +13994,7 @@ var CanvasProvider = {
+ 		}
+ 		if (canvas.width === width && canvas.height === height) {
+ 			if (clear)
+-				ctx.clearRect(0, 0, width + 1, height + 1);
++				ctx.clearRect(0, 0, width, height);
+ 		} else {
+ 			canvas.width = width;
+ 			canvas.height = height;

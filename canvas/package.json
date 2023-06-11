@@ -1,0 +1,8 @@
+{
+  "name": "canvas",
+  "version": "2.5.0",
+  "main": "index.js",
+  "dependencies": {
+    "pureimage": "^0.3.17"
+  }
+}

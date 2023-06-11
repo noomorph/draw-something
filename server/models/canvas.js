@@ -1,5 +1,5 @@
 'use strict';
-const paper = require('paper-jsdom-canvas');
+const paper = require('paper');
 
 class Canvas {
 
