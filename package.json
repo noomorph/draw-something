@@ -23,6 +23,7 @@
     "@angular/router": "~3.1.0",
     "@fontsource/jost": "^5.0.3",
     "aws-serverless-express": "^3.0.2",
+    "babel-preset-es2015-node": "^6.0.1",
     "bootstrap": "^3.3.6",
     "canvas": "file:./canvas",
     "core-js": "^2.4.1",
@@ -38,12 +39,9 @@
     "semantic-ui-css": "^2.1.8",
     "socket.io": "1.4.5",
     "systemjs": "^0.19.26",
-    "zone.js": "^0.6.25"
-  },
-  "devDependencies": {
-    "babel-preset-es2015-node": "^6.0.1",
     "tslint": "^3.8.1",
     "typescript": "^2.0.3",
-    "typings": "^1.4.0"
+    "typings": "^1.4.0",
+    "zone.js": "^0.6.25"
   }
 }
