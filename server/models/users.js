@@ -26,12 +26,15 @@ class Users {
     return _.sample(_.filter(users, { drew: leastDrew }));
   };
 
+  /**
+   * @return {Array<Player>} Array of users
+   */
   getUserList() {
     return _.values(this.users);
   };
 
   getReadyUserList() {
-    return _.filter(this.getUserList(), 'isReady');
+    return _.filter(this.getUserList(), u => u.isReady && !`${u.name}`.includes('zritelj'));
   };
 
   enoughReady() {
